@@ -10,6 +10,8 @@ function CommentArea({ selectedBook }) {
   const [comment, setComment] = useState('')
   const [rate, setRate] = useState(0)
 
+  const handeStarClick = (e) => setRate(Number(e.target.dataset?.star) || 0)
+
   const fetchComments = useCallback(() => {
     if (!selectedBook) return
     setLoading(true)
@@ -29,6 +31,7 @@ function CommentArea({ selectedBook }) {
   }, [selectedBook])
 
   useEffect(fetchComments, [fetchComments])
+  const postComment = ''
 
   return (
     <section className="comments">
@@ -51,14 +54,16 @@ function CommentArea({ selectedBook }) {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       ></textarea>
-      <div className="rating">
+      <div onClick={handeStarClick} className="rating">
         {Array.from({ length: 5 }, (_, i) => {
           const star = 5 - i
           return (
             <i
               key={i}
               data-star={star}
-              className="fas fa-star rating__star"
+              className={`fas fa-star rating__star ${
+                star === rate && 'rating__star--selected'
+              }`}
             ></i>
           )
         })}
